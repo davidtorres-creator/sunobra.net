@@ -1,0 +1,113 @@
+﻿@model sunobra.Model.Contratacione
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Contratacione</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="ClienteId" class="control-label"></label>
+                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ObreroId" class="control-label"></label>
+                <select asp-for="ObreroId" class="form-control" asp-items="ViewBag.ObreroId"></select>
+                <span asp-validation-for="ObreroId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ProyectoId" class="control-label"></label>
+                <select asp-for="ProyectoId" class="form-control" asp-items="ViewBag.ProyectoId"></select>
+                <span asp-validation-for="ProyectoId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FechaContratacion" class="control-label"></label>
+                <input asp-for="FechaContratacion" class="form-control" />
+                <span asp-validation-for="FechaContratacion" class="text-danger"></span>
+            </div>
+
+            <!-- 📅 FechaInicio CON CALENDARIO -->
+            <div class="form-group">
+                <label asp-for="FechaInicio" class="control-label"></label>
+                <input asp-for="FechaInicio" class="form-control" type="date" />
+                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+            </div>
+
+            <!-- 📅 FechaFin CON CALENDARIO -->
+            <div class="form-group">
+                <label asp-for="FechaFin" class="control-label"></label>
+                <input asp-for="FechaFin" class="form-control" type="date" />
+                <span asp-validation-for="FechaFin" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TarifaTotal" class="control-label"></label>
+                <input asp-for="TarifaTotal" class="form-control" />
+                <span asp-validation-for="TarifaTotal" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <input asp-for="Estado" class="form-control" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CalificacionCliente" class="control-label"></label>
+                <input asp-for="CalificacionCliente" class="form-control" />
+                <span asp-validation-for="CalificacionCliente" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CalificacionObrero" class="control-label"></label>
+                <input asp-for="CalificacionObrero" class="form-control" />
+                <span asp-validation-for="CalificacionObrero" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ComentariosCliente" class="control-label"></label>
+                <input asp-for="ComentariosCliente" class="form-control" />
+                <span asp-validation-for="ComentariosCliente" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ComentariosObrero" class="control-label"></label>
+                <input asp-for="ComentariosObrero" class="form-control" />
+                <span asp-validation-for="ComentariosObrero" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
