@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization; // ⬅️ NUEVO
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using sunobra.Model;
 
 namespace sunobra.Controllers
 {
+    [Authorize] // ⬅️ Protege TODO el controlador (todas las acciones requieren login)
     public class ContratacionesController : Controller
     {
         private readonly SunobraDbContext _context;
@@ -21,27 +23,25 @@ namespace sunobra.Controllers
         // GET: Contrataciones
         public async Task<IActionResult> Index()
         {
-            var sunobraDbContext = _context.Contrataciones.Include(c => c.Cliente).Include(c => c.Obrero).Include(c => c.Proyecto);
+            var sunobraDbContext = _context.Contrataciones
+                .Include(c => c.Cliente)
+                .Include(c => c.Obrero)
+                .Include(c => c.Proyecto);
             return View(await sunobraDbContext.ToListAsync());
         }
 
         // GET: Contrataciones/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var contratacione = await _context.Contrataciones
                 .Include(c => c.Cliente)
                 .Include(c => c.Obrero)
                 .Include(c => c.Proyecto)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contratacione == null)
-            {
-                return NotFound();
-            }
+
+            if (contratacione == null) return NotFound();
 
             return View(contratacione);
         }
@@ -56,17 +56,13 @@ namespace sunobra.Controllers
         }
 
         // POST: Contrataciones/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ClienteId,ObreroId,ProyectoId,FechaContratacion,FechaInicio,FechaFin,TarifaTotal,Estado,Descripcion,CalificacionCliente,CalificacionObrero,ComentariosCliente,ComentariosObrero")] Contratacione contratacione)
         {
             if (ModelState.IsValid)
             {
-
                 contratacione.FechaContratacion = DateTime.UtcNow;
-
                 _context.Add(contratacione);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -80,16 +76,11 @@ namespace sunobra.Controllers
         // GET: Contrataciones/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var contratacione = await _context.Contrataciones.FindAsync(id);
-            if (contratacione == null)
-            {
-                return NotFound();
-            }
+            if (contratacione == null) return NotFound();
+
             ViewData["ClienteId"] = new SelectList(_context.Usuarios, "Id", "Id", contratacione.ClienteId);
             ViewData["ObreroId"] = new SelectList(_context.Usuarios, "Id", "Id", contratacione.ObreroId);
             ViewData["ProyectoId"] = new SelectList(_context.Proyectos, "Id", "Id", contratacione.ProyectoId);
@@ -97,16 +88,11 @@ namespace sunobra.Controllers
         }
 
         // POST: Contrataciones/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Id,ClienteId,ObreroId,ProyectoId,FechaContratacion,FechaInicio,FechaFin,TarifaTotal,Estado,Descripcion,CalificacionCliente,CalificacionObrero,ComentariosCliente,ComentariosObrero")] Contratacione contratacione)
         {
-            if (id != contratacione.Id)
-            {
-                return NotFound();
-            }
+            if (id != contratacione.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -117,14 +103,8 @@ namespace sunobra.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContratacioneExists(contratacione.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!ContratacioneExists(contratacione.Id)) return NotFound();
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -137,20 +117,15 @@ namespace sunobra.Controllers
         // GET: Contrataciones/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var contratacione = await _context.Contrataciones
                 .Include(c => c.Cliente)
                 .Include(c => c.Obrero)
                 .Include(c => c.Proyecto)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (contratacione == null)
-            {
-                return NotFound();
-            }
+
+            if (contratacione == null) return NotFound();
 
             return View(contratacione);
         }
@@ -164,9 +139,8 @@ namespace sunobra.Controllers
             if (contratacione != null)
             {
                 _context.Contrataciones.Remove(contratacione);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

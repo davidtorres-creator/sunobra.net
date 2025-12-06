@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization; // ⬅️ NUEVO
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using sunobra.Model;
 
 namespace sunobra.Controllers
 {
+    [Authorize] // ⬅️ Protege TODO el controlador
     public class ProyectoesController : Controller
     {
         private readonly SunobraDbContext _context;
@@ -21,26 +23,24 @@ namespace sunobra.Controllers
         // GET: Proyectoes
         public async Task<IActionResult> Index()
         {
-            var sunobraDbContext = _context.Proyectos.Include(p => p.Cliente).Include(p => p.Obrero);
+            var sunobraDbContext = _context.Proyectos
+                .Include(p => p.Cliente)
+                .Include(p => p.Obrero);
+
             return View(await sunobraDbContext.ToListAsync());
         }
 
         // GET: Proyectoes/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var proyecto = await _context.Proyectos
                 .Include(p => p.Cliente)
                 .Include(p => p.Obrero)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (proyecto == null)
-            {
-                return NotFound();
-            }
+
+            if (proyecto == null) return NotFound();
 
             return View(proyecto);
         }
@@ -54,8 +54,6 @@ namespace sunobra.Controllers
         }
 
         // POST: Proyectoes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Categoria,ImagenUrl,Ubicacion,ClienteId,ObreroId,Estado,FechaCreacion,FechaInicio,FechaFin,Presupuesto")] Proyecto proyecto)
@@ -66,6 +64,7 @@ namespace sunobra.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ClienteId"] = new SelectList(_context.Usuarios, "Id", "Id", proyecto.ClienteId);
             ViewData["ObreroId"] = new SelectList(_context.Usuarios, "Id", "Id", proyecto.ObreroId);
             return View(proyecto);
@@ -74,32 +73,23 @@ namespace sunobra.Controllers
         // GET: Proyectoes/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var proyecto = await _context.Proyectos.FindAsync(id);
-            if (proyecto == null)
-            {
-                return NotFound();
-            }
+            if (proyecto == null) return NotFound();
+
             ViewData["ClienteId"] = new SelectList(_context.Usuarios, "Id", "Id", proyecto.ClienteId);
             ViewData["ObreroId"] = new SelectList(_context.Usuarios, "Id", "Id", proyecto.ObreroId);
+
             return View(proyecto);
         }
 
         // POST: Proyectoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Id,Titulo,Descripcion,Categoria,ImagenUrl,Ubicacion,ClienteId,ObreroId,Estado,FechaCreacion,FechaInicio,FechaFin,Presupuesto")] Proyecto proyecto)
         {
-            if (id != proyecto.Id)
-            {
-                return NotFound();
-            }
+            if (id != proyecto.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -110,38 +100,29 @@ namespace sunobra.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProyectoExists(proyecto.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!ProyectoExists(proyecto.Id)) return NotFound();
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ClienteId"] = new SelectList(_context.Usuarios, "Id", "Id", proyecto.ClienteId);
             ViewData["ObreroId"] = new SelectList(_context.Usuarios, "Id", "Id", proyecto.ObreroId);
+
             return View(proyecto);
         }
 
         // GET: Proyectoes/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var proyecto = await _context.Proyectos
                 .Include(p => p.Cliente)
                 .Include(p => p.Obrero)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (proyecto == null)
-            {
-                return NotFound();
-            }
+
+            if (proyecto == null) return NotFound();
 
             return View(proyecto);
         }
@@ -152,12 +133,13 @@ namespace sunobra.Controllers
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var proyecto = await _context.Proyectos.FindAsync(id);
+
             if (proyecto != null)
             {
                 _context.Proyectos.Remove(proyecto);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

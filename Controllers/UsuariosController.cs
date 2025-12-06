@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using sunobra.Model;
 
 namespace sunobra.Controllers
 {
+    [Authorize]  // ⬅⬅⬅ Protección con Identity
     public class UsuariosController : Controller
     {
         private readonly SunobraDbContext _context;
@@ -57,6 +59,7 @@ namespace sunobra.Controllers
                 new SelectListItem { Text = "WhatsApp", Value = "WhatsApp" },
                 new SelectListItem { Text = "Email", Value = "Email" }
             };
+
             ViewBag.Especialidades = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Albañilería", Value = "Albañilería" },
@@ -67,13 +70,10 @@ namespace sunobra.Controllers
                 new SelectListItem { Text = "Soldadura", Value = "Soldadura" }
             };
 
-
             return View();
         }
 
         // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Email,Password,UserType,Telefono,Direccion,PreferenciasContacto,Especialidades,Experiencia,TarifaHora,Certificaciones,Descripcion,FechaRegistro,Activo")] Usuario usuario)
@@ -104,8 +104,6 @@ namespace sunobra.Controllers
         }
 
         // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Id,Nombre,Apellido,Email,Password,UserType,Telefono,Direccion,PreferenciasContacto,Especialidades,Experiencia,TarifaHora,Certificaciones,Descripcion,FechaRegistro,Activo")] Usuario usuario)
