@@ -1,8 +1,70 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "SunObra";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container my-5">
+    <!-- Sección del Logo y Bienvenida -->
+    <div class="text-center mb-5">
+        <img src="~/images/logo-sunobra.png" alt="Logo SunObra" class="mb-4" style="max-width: 400px; height: auto;">
+        <h1 class="display-4 fw-bold text-primary">Bienvenido a SunObra</h1>
+        <p class="lead text-muted">Soluciones innovadoras en construcción</p>
+    </div>
+
+    <!-- Sección de Integrantes del Equipo -->
+    <div class="team-section mt-5">
+        <h2 class="text-center mb-4 fw-bold">Nuestro Equipo</h2>
+        <div class="row g-4 justify-content-center">
+            <!-- Integrante 1 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="~/images/NewFolder1/member1.jpg" class="card-img-top" alt="Integrante 1" style="height: 250px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">David Antolinez</h5>
+                        <p class="text-muted mb-2">Director General</p>
+                        <p class="card-text small">Ingeniero con 15 años de experiencia en proyectos de construcción sostenible.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrante 2 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="~/images/NewFolder1/member2.jpg" class="card-img-top" alt="Integrante 2" style="height: 250px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">David Felipe</h5>
+                        <p class="text-muted mb-2">Gerente de Proyectos</p>
+                        <p class="card-text small">Especialista en gestión de proyectos y coordinación de equipos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrante 3 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="~/images/NewFolder1/member3.jpg" class="card-img-top" alt="Integrante 3" style="height: 250px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Dilan Ruiz</h5>
+                        <p class="text-muted mb-2">Ingeniero</p>
+                        <p class="card-text small">Experto en diseño e instalación de sistemas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Adicional -->
+    <div class="text-center mt-5">
+        <p>Conoce más sobre <a href="https://learn.microsoft.com/aspnet/core" class="text-decoration-none">construcción de aplicaciones web con ASP.NET Core</a>.</p>
+    </div>
 </div>
+
+<style>
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+        }
+</style>
